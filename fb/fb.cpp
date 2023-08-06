@@ -147,37 +147,40 @@ void InitFB(Framebuffer *data) {
 	
 	vid = fbData.Address;
 
-	PrintScreen("Hello, world\n");
+	FB_PrintScreen("Hello, world\n");
 }
 
-void PrintScreen(const char *string) {
-	char *ptr = string;
+void FB_PutChar(const char ch) {
+	if (ch == '\n' || globalCol > fbData.Width / 8 + 1) {
+		globalCol = 0;
+		globalRow++;
+	} else globalCol++;
 
-	while(*ptr) {
-		if (*ptr == '\n' || globalCol > fbData.Width / 8 + 1) {
-			globalCol = 0;
-			globalRow++;
-		} else globalCol++;
+	if (globalRow > fbData.Height / 10 + 1) {
+		/* Scroll */
+	}
 
-		if (globalRow > fbData.Height / 10 + 1) {
-			break;
+	const char *bitmap = font[(uint8_t)ch];
+	int set;
+	for (int x = globalCol * 8; x < globalCol * 8 + 8; x++) {
+		for (int y = globalRow * 8; y < globalRow * 8 + 8; y++) {
+			set = bitmap[y - globalRow * 8] & 1 << (x - globalCol * 8);
+			if (set) vid[x + y * fbData.Width] = (0xFF << fbData.RedShift) | (0xFF << fbData.GreenShift) | (0xFF << fbData.BlueShift);
 		}
-
-		const char *bitmap = font[(uint8_t)*ptr];
-		int set;
-		for (int x = globalCol * 8; x < globalCol * 8 + 8; x++) {
-			for (int y = globalRow * 8; y < globalRow * 8 + 8; y++) {
-				set = bitmap[y - globalRow * 8] & 1 << (x - globalCol * 8);
-				if (set) vid[x + y * fbData.Width] = (0xFF << fbData.RedShift) | (0xFF << fbData.GreenShift) | (0xFF << fbData.BlueShift);
-			}
-		}
-
-		ptr++;
 	}
 
 }
 
-void PrintScreen(int row, int col, const char *string) {
+void FB_PrintScreen(const char *string) {
+	char *ptr = string;
+
+	while(*ptr) {
+		FB_PutChar(*ptr++);
+	}
+
+}
+
+void FB_PrintScreen(int row, int col, const char *string) {
 	char *ptr = string;
 
 	while(*ptr) {

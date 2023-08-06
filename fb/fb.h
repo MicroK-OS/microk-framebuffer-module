@@ -15,6 +15,7 @@ struct Framebuffer {
 extern uint8_t font[128][8];
 
 void InitFB(Framebuffer *data);
-void PrintScreen(const char *string);
-void PrintScreen(int row, int col, const char *string);
+void FB_PrintScreen(const char *string);
+void FB_PutChar(const char ch);
+void FB_PrintScreen(int row, int col, const char *string);
 
