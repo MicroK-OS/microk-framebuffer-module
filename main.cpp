@@ -4,10 +4,25 @@
 #include <cdefs.h>
 #include <mkmi.h>
 
-extern "C" uint32_t VendorID = /* Vendor name here */;
-extern "C" uint32_t ProductID = /* Product name here */;
+extern "C" uint32_t VendorID = 0xCAFEBABE;
+extern "C" uint32_t ProductID = 0xF3A2C0DE;
+
+#include "fb/fb.h"
 
 extern "C" size_t OnInit() {
+	MKMI_Printf("Probing for framebuffer.\r\n");
+
+	Framebuffer fbData;
+	Syscall(SYSCALL_FILE_READ, "FB:0", &fbData, sizeof(fbData), 0, 0, 0);
+	InitFB(&fbData);
+
+	PrintScreen(" __  __  _                _  __\n"
+			"|  \\/  |(_) __  _ _  ___ | |/ /\n"
+			"| |\\/| || |/ _|| '_|/ _ \\|   < \n"
+			"|_|  |_||_|\\__||_|  \\___/|_|\\_\\\n\n");
+
+	PrintScreen("The user module is starting...\n");
+
 	return 0;
 }
 

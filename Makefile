@@ -1,7 +1,7 @@
 include ../../Makefile.inc
 
 MODDIR = .
-MODNAME = vendorid-productid-modname
+MODNAME = cafebabe-f3a2c0de-framebuffer-module
 
 COMMON_CFLAGS = -ffreestanding             \
 	 -fno-stack-protector          \
