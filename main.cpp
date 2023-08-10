@@ -20,8 +20,8 @@ extern "C" size_t OnInit() {
 		  "|  \\/  |(_) __  _ _  ___ | |/ /\n"
 		  "| |\\/| || |/ _|| '_|/ _ \\|   < \n"
 		  "|_|  |_||_|\\__||_|  \\___/|_|\\_\\\n\n"
-		  "Welcome from %x by %x\r\n", ProductID, VendorID);
-
+		  "Welcome from %x by %x\n", ProductID, VendorID);
+	
 	return 0;
 }
 

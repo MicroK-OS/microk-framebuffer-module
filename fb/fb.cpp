@@ -151,24 +151,29 @@ void InitFB(Framebuffer *data) {
 }
 
 void FB_PutChar(const char ch) {
-	if (ch == '\n' || globalCol > fbData.Width / 8 + 1) {
+	if(ch == '\r') {
+		globalCol = 0;
+		return;
+	} else if (ch == '\n' || globalCol > fbData.Width / 8 + 1) {
 		globalCol = 0;
 		globalRow++;
-	} else globalCol++;
+		return;
+	} else {
+		globalCol++;
 
-	if (globalRow > fbData.Height / 10 + 1) {
-		/* Scroll */
-	}
+		if (globalRow > fbData.Height / 10 + 1) {
+			/* Scroll */
+		}
 
-	const char *bitmap = font[(uint8_t)ch];
-	int set;
-	for (int x = globalCol * 8; x < globalCol * 8 + 8; x++) {
-		for (int y = globalRow * 8; y < globalRow * 8 + 8; y++) {
-			set = bitmap[y - globalRow * 8] & 1 << (x - globalCol * 8);
-			if (set) vid[x + y * fbData.Width] = (0xFF << fbData.RedShift) | (0xFF << fbData.GreenShift) | (0xFF << fbData.BlueShift);
+		const char *bitmap = font[(uint8_t)ch];
+		int set;
+		for (int x = globalCol * 8; x < globalCol * 8 + 8; x++) {
+			for (int y = globalRow * 8; y < globalRow * 8 + 8; y++) {
+				set = bitmap[y - globalRow * 8] & 1 << (x - globalCol * 8);
+				if (set) vid[x + y * fbData.Width] = (0xFF << fbData.RedShift) | (0xFF << fbData.GreenShift) | (0xFF << fbData.BlueShift);
+			}
 		}
 	}
-
 }
 
 void FB_PrintScreen(const char *string) {
