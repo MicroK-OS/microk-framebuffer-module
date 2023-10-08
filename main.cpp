@@ -13,7 +13,7 @@ extern "C" size_t OnInit() {
 	MKMI_Printf("Probing for framebuffer.\r\n");
 
 	Framebuffer fbData;
-	Syscall(SYSCALL_FILE_READ, "FB:0", &fbData, sizeof(fbData), 0, 0, 0);
+	//Syscall(SYSCALL_FILE_READ, "FB:0", &fbData, sizeof(fbData), 0, 0, 0);
 	InitFB(&fbData);
 
 	FB_Printf(" __  __  _                _  __\n"
